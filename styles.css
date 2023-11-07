@@ -1,0 +1,59 @@
+body {
+    margin: 0px;   
+       
+}
+
+#ikkuna {
+    display: inline-block; 
+    position: relative;    
+}
+
+#canvas {    
+    border: 2px green solid; 
+    z-index: 1;
+    position: absolute;    
+}
+
+#plus, #miinus {
+    position:absolute;
+    z-index: 2;
+    top: 5px;
+    width: 25px;
+}
+
+#up, #down, #left, #right {    
+    position:absolute;
+    z-index: 2;
+    width: 25px;
+    height: 25px;
+}
+
+#plus {   
+    float:left;
+    left: 5px;         
+}
+
+#miinus {        
+    left: 36px;
+}
+
+#up {
+    left: 80px;
+    top: 30px;
+}
+
+#down {
+    left: 80px;
+    top: 100px;
+}
+
+#left {
+    top: 65px;
+    left: 40px;
+}
+
+#right {
+    top: 65px;
+    left: 120px;
+}
+
