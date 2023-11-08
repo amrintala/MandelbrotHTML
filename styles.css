@@ -82,6 +82,7 @@ img {
 }
 
 #note {
+    background-color: black;
     position: absolute;
     text-align: center;
     z-index: 2;
@@ -99,6 +100,7 @@ img {
 }
 
 .i {
+    background-color: black;
     position: absolute;
     text-align: center;
     text-decoration: none;
@@ -110,7 +112,7 @@ img {
     color: rgb(51, 155, 155);
     cursor: pointer;
     border: 1px solid rgb(51, 155, 155);
-    border-radius: 5px;
+    border-radius: 5px;  
 }
 
 .i:hover .hoverBubble {    
