@@ -12,10 +12,10 @@
             <button id="plus" onclick=zoomIn()>+</button>  
             <button id="miinus" onclick=zoomOut()>-</button>
 
-            <button id="up" onclick=panUp()>^</button>
-            <button id="down" onclick=panDown()>v</button>
-            <button id="left" onclick=panLeft()><</button>
-            <button id="right" onclick=panRight()>></button>
+            <button id="up" onclick=panUp()><img src="images/arrow_icon.png" width=19></button>
+            <button id="down" onclick=panDown()><img src="images/arrow_icon.png" width=19></button>
+            <button id="left" onclick=panLeft()><img src="images/arrow_icon.png" width=19></button>
+            <button id="right" onclick=panRight()><img src="images/arrow_icon.png" width=19></button>
         
         
         </div>
@@ -121,29 +121,29 @@
 
             function panUp(){
                 let y_scale = y_max - y_min
-                y_max += y_scale * panSpeed
-                y_min += y_scale * panSpeed
-                init()
-            }
-
-            function panDown(){
-                let y_scale = y_max - y_min
                 y_max -= y_scale * panSpeed
                 y_min -= y_scale * panSpeed
                 init()
             }
 
+            function panDown(){
+                let y_scale = y_max - y_min
+                y_max += y_scale * panSpeed
+                y_min += y_scale * panSpeed
+                init()
+            }
+
             function panLeft(){
                 let x_scale = x_max - x_min
-                x_max += x_scale * panSpeed
-                x_min += x_scale * panSpeed
+                x_max -= x_scale * panSpeed
+                x_min -= x_scale * panSpeed
                 init()
             }
 
             function panRight(){
                 let x_scale = x_max - x_min
-                x_max -= x_scale * panSpeed
-                x_min -= x_scale * panSpeed
+                x_max += x_scale * panSpeed
+                x_min += x_scale * panSpeed
                 init()
             }
 

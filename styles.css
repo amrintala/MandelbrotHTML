@@ -14,18 +14,32 @@ body {
     position: absolute;    
 }
 
+button {
+    text-align: center;
+    padding: 0px;
+    background-color: black;
+    border: 1px solid rgb(51, 155, 155);
+}
+
+img {
+    margin: 0px;
+}
+
 #plus, #miinus {
     position:absolute;
     z-index: 2;
     top: 5px;
     width: 25px;
+    cursor: pointer;
+    color: rgb(51, 155, 155)
 }
 
 #up, #down, #left, #right {    
     position:absolute;
     z-index: 2;
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
 }
 
 #plus {   
@@ -37,23 +51,26 @@ body {
     left: 36px;
 }
 
-#up {
-    left: 80px;
+#up {    
     top: 30px;
+    left: 80px;
+    transform: rotate(270deg)
 }
 
-#down {
+#down {    
+    top: 120px;
     left: 80px;
-    top: 100px;
+    transform: rotate(90deg)
 }
 
 #left {
-    top: 65px;
-    left: 40px;
+    top: 75px;
+    left: 35px;
+    transform: rotate(180deg)
 }
 
 #right {
-    top: 65px;
-    left: 120px;
+    top: 75px;
+    left: 125px;
 }
 
