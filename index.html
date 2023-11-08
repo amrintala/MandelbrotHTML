@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
+        <link rel="stylesheet" href="styles.css">
     </head>
-    <body onload=init()>
 
-        <canvas id="canvas"></canvas>
+    <body onload=init()>
+        <div id="ikkuna">
+            <canvas id="canvas">
+              
+            </canvas>
+            <button id="plus" onclick=zoomIn()>+</button>  
+            <button id="miinus" onclick=zoomOut()>-</button>
+
+            <button id="up" onclick=panUp()>^</button>
+            <button id="down" onclick=panDown()>v</button>
+            <button id="left" onclick=panLeft()><</button>
+            <button id="right" onclick=panRight()>></button>
         
+        
+        </div>
 
         <script>
 
-            let screen_width = window.innerWidth
-            let screen_height = window.innerHeight
+            let screen_width = 1200
+            let screen_height = 1200            
 
-            let x_min = -1.5
-            let y_min = -2
-            let x_max = 1.5
-            let y_max = 2
+            let x_min = -2.0
+            let x_max = 1.0
+            let y_min = -1.5            
+            let y_max = 1.5
 
-            max_iterations = 80
+            let panSpeed = 0.10
+            let zoomSpeed = 0.10
+
+            max_iterations = 100
 
             var canvas = document.getElementById('canvas')
             var ctx = canvas.getContext('2d')
@@ -30,59 +45,106 @@
             let imgdatalength = imgdata.data.length
 
             function init() {
+                
                 let arr = []
 
-                for (let i = 0; i <= screen_width; i++) {
-                    for (let j = 0; j <= screen_height; j++){
+                for (let j = 0; j < screen_height; j++) {
+                    for (let i = 0; i < screen_width; i++){
+
                         c = {
                             x: mapPixel(i, x_min, x_max, screen_width),
                             y: mapPixel(j, y_min, y_max, screen_height)
                         }
-                        let n = mandelbrot(c)
 
-                        imgdata.data[4*i*(j+1)] = (51 + n) % 255 
-                        imgdata.data[4*i*(j+1) + 1] = (102 + n) % 255 
-                        imgdata.data[4*i*(j+1) + 2] = (153 + n) % 255 
-                        imgdata.data[4*i*(j+1) + 3] = (204 + n) % 255 
+                        let n = iterate(c)
 
-                        console.log(4*i*(j+1))
+                        if (n == max_iterations){
+                            n = 0
+                        }
+
+                        imgdata.data[i*4 + j*screen_width*4] = (51 * n / max_iterations)                        
+                        imgdata.data[i*4 + j*screen_width*4 + 1] = (155 * n / max_iterations)                        
+                        imgdata.data[i*4 + j*screen_width*4 + 2] = (155 * n / max_iterations)                         
+                        imgdata.data[i*4 + j*screen_width*4 + 3] = 255                        
 
                     }
                 }
                 ctx.putImageData(imgdata, 0, 0)
-                console.log(arr)
+                console.log(x_min, x_max, y_min, y_max)
                 
             }
 
-            function mandelbrot(c) {
+            function iterate(c) {
                 let z = { x: 0, y: 0 }, n = 0, div=0;
 
                 while (n < max_iterations && div <= 2){
                 
-                let z_squared = {
-                    x: Math.pow(z.x, 2) - Math.pow(z.y, 2),
-                    y: 2 * z.x * z.y
-                    }                
+                    let z_squared = {
+                        x: Math.pow(z.x, 2) - Math.pow(z.y, 2),
+                        y: 2 * z.x * z.y
+                        }                
 
-                z = {
-                    x: z_squared.x + c.x,
-                    y: z_squared.y + c.y
-                }
+                    z = {
+                        x: z_squared.x + c.x,
+                        y: z_squared.y + c.y
+                    }
 
-                div = Math.sqrt(Math.pow(z.x, 2) + Math.pow(z.y, 2));
-                n += 1;
+                    div = Math.sqrt(Math.pow(z.x, 2) + Math.pow(z.y, 2));
+                    n += 1;
                 }
                 return n
             }
 
-            function mapPixel(pixel, min, max, screen) {
-                return (max - min) / screen * pixel
+            function mapPixel(pixel, min, max, screen) {                
+                return ((max - min) / screen * pixel) + min
+            }         
+
+            function zoomIn() {
+                let x_scale = x_max - x_min
+                let y_scale = y_max - y_min
+                x_max -= x_scale * zoomSpeed
+                x_min += x_scale * zoomSpeed
+                y_max -= y_scale * zoomSpeed
+                y_min += y_scale * zoomSpeed
+                init()
             }
 
-            
+            function zoomOut() {
+                let x_scale = x_max - x_min
+                let y_scale = y_max - y_min
+                x_max += x_scale * zoomSpeed
+                x_min -= x_scale * zoomSpeed
+                y_max += y_scale * zoomSpeed
+                y_min -= y_scale * zoomSpeed
+                init()
+            }
 
-            function draw() {
+            function panUp(){
+                let y_scale = y_max - y_min
+                y_max += y_scale * panSpeed
+                y_min += y_scale * panSpeed
+                init()
+            }
 
+            function panDown(){
+                let y_scale = y_max - y_min
+                y_max -= y_scale * panSpeed
+                y_min -= y_scale * panSpeed
+                init()
+            }
+
+            function panLeft(){
+                let x_scale = x_max - x_min
+                x_max += x_scale * panSpeed
+                x_min += x_scale * panSpeed
+                init()
+            }
+
+            function panRight(){
+                let x_scale = x_max - x_min
+                x_max -= x_scale * panSpeed
+                x_min -= x_scale * panSpeed
+                init()
             }
 
         </script>
