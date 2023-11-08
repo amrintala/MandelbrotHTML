@@ -2,6 +2,9 @@
 <html lang="en">
     <head>
         <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     </head>
 
     <body onload=init()>
@@ -17,6 +20,7 @@
             <button id="left" onclick=panLeft()><img src="images/arrow_icon.png" width=19></button>
             <button id="right" onclick=panRight()><img src="images/arrow_icon.png" width=19></button>
 
+            <p id="note">Klikkaa kuvaa keskittääksesi</p>
             <a href="https://github.com/amrintala/MandelbrotHTML" target="_blank" title="https://github.com/amrintala/MandelbrotHTML"><button id="source" >Lähdekoodi</button></a>
             <a href="#" class="i">i
 
@@ -31,6 +35,8 @@
                     Jos c:n itseisarvo on lähellä nollaa, niin z ei milloinkaan saavuta arvoa 2.
                     <br><br>
                     Kuvassa kukin piste vastaa yhtä c:n arvoa ja kyseisen pisteen kirkkaus kertoo tarvittujen iterointikierrosten lukumäärän kyseisellä C:n arvolla.
+                    <br><br>                    
+                    Mikäli piste saavuttaa koodissa määritellyn maksimi-iteraatioiden määrän, on pisteen kirkkaus määritelty arvoon 0.
                 </p>
             </div>
             </a> 
@@ -60,6 +66,8 @@
             let imgdata = ctx.getImageData(0,0,screen_width, screen_height)
             let imgdatalength = imgdata.data.length
 
+            canvas.addEventListener("click", mouseClick)
+
             function init() {
                 
                 let arr = []
@@ -86,7 +94,7 @@
                     }
                 }
                 ctx.putImageData(imgdata, 0, 0)
-                console.log(x_min, x_max, y_min, y_max)
+                
                 
             }
 
@@ -163,6 +171,19 @@
                 init()
             }
 
+            function mouseClick(e){
+                let mouse_x = mapPixel(e.clientX, x_min, x_max, screen_width)
+                let mouse_y = mapPixel(e.clientY, y_min, y_max, screen_height)
+                
+                x_min = mouse_x - (x_max - x_min) / 2
+                x_max = mouse_x + (x_max - x_min) / 2
+                y_min = mouse_y - (y_max - y_min) / 2
+                y_max = mouse_y + (y_max - y_min) / 2
+
+                console.log(e.clientX, e.clientY,(x_max - x_min) / 2, x_min, x_max)
+                init()
+            }
+            
         </script>
     </body>
 </html>
