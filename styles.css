@@ -74,7 +74,8 @@ img {
     left: 125px;
 }
 
-#source {    
+#source {
+    text-align: right; 
     left: 1095px;
     top: 10px;
     padding: 2px;    

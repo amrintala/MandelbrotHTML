@@ -8,13 +8,11 @@
     </head>
 
     <body onload=init()>
-        <div id="ikkuna">
+        <div id="ikkuna">            
             <canvas id="canvas">
-              
-            </canvas>
-            <button id="plus" onclick=zoomIn()>+</button>  
-            <button id="miinus" onclick=zoomOut()>-</button>
-
+            
+            </canvas>           
+            
             <button id="up" onclick=panUp()><img src="images/arrow_icon.png" width=19></button>
             <button id="down" onclick=panDown()><img src="images/arrow_icon.png" width=19></button>
             <button id="left" onclick=panLeft()><img src="images/arrow_icon.png" width=19></button>
@@ -27,19 +25,19 @@
             <div class="hoverBubble bubblePosition"> 
                 <h2>Mandelbrot Set </h2>
                 <p>Mandelbrotin joukko eli Mandelbrotin fraktaali on eräs tunnetuimmista fraktaaleista. <br><br>
-                    Mandelbrotin joukko perustuu kompleksilukufunktioon z<sub>n</sub>+1 = z<sub>n</sub><sup>2</sup> + c, jossa z ja c ovat kompleksilukuja, ja 
+                    Mandelbrotin joukko perustuu kompleksilukufunktioon z<sub>n+1</sub> = z<sub>n</sub><sup>2</sup> + c, jossa z ja c ovat kompleksilukuja, ja 
                     käsittää ne kyseisen kompleksifunktion muuttujan c arvot, joilla funktion arvo pysyy rajattuna.
                     <br><br>
                     C on vakio ja z:lle annetaan alkuarvoksi z<sub>0</sub> = 0, tällöin yhtälöstä saadaan z<sub>1</sub> = c ja edelleen z<sub>2</sub> = z<sub>1</sub><sup>2</sup>  + c. Iterointia jatketaan kunnes z:n itseisarvo ylittää arvon 2.
                     <br><br>
-                    Jos c:n itseisarvo on lähellä nollaa, niin z ei milloinkaan saavuta arvoa 2.
+                    Jos c:n itseisarvo on lähellä nollaa, niin funktio ei milloinkaan saavuta arvoa 2.
                     <br><br>
-                    Kuvassa kukin piste vastaa yhtä c:n arvoa ja kyseisen pisteen kirkkaus kertoo tarvittujen iterointikierrosten lukumäärän kyseisellä C:n arvolla.
+                    Kuvassa kukin piste vastaa yhtä c:n arvoa ja kyseisen pisteen kirkkaus kertoo tarvittujen iterointikierrosten lukumäärän kyseisellä c:n arvolla.
                     <br><br>                    
                     Mikäli piste saavuttaa koodissa määritellyn maksimi-iteraatioiden määrän, on pisteen kirkkaus määritelty arvoon 0.
                 </p>
             </div>
-            </a> 
+            </a>         
         </div>
 
         <script>
@@ -55,7 +53,7 @@
             let panSpeed = 0.10
             let zoomSpeed = 0.10
 
-            max_iterations = 120
+            max_iterations = 160
 
             var canvas = document.getElementById('canvas')
             var ctx = canvas.getContext('2d')
@@ -67,6 +65,8 @@
             let imgdatalength = imgdata.data.length
 
             canvas.addEventListener("click", mouseClick)
+            canvas.addEventListener("wheel", mouseZoom)
+            
 
             function init() {
                 
@@ -94,8 +94,6 @@
                     }
                 }
                 ctx.putImageData(imgdata, 0, 0)
-                
-                
             }
 
             function iterate(c) {
@@ -178,11 +176,29 @@
                 x_min = mouse_x - (x_max - x_min) / 2
                 x_max = mouse_x + (x_max - x_min) / 2
                 y_min = mouse_y - (y_max - y_min) / 2
-                y_max = mouse_y + (y_max - y_min) / 2
+                y_max = y_min + (x_max - x_min)     // Tällä varmistetaan, että kuvan mittasuhde säilyy
 
                 console.log(e.clientX, e.clientY,(x_max - x_min) / 2, x_min, x_max)
                 init()
             }
+
+            function mouseZoom(e) {
+                let mouse_x = mapPixel(e.clientX, x_min, x_max, screen_width)
+                let mouse_y = mapPixel(e.clientY, y_min, y_max, screen_height)
+                
+                x_min = mouse_x - (x_max - x_min) / 2
+                x_max = mouse_x + (x_max - x_min) / 2
+                y_min = mouse_y - (y_max - y_min) / 2
+                y_max = y_min + x_max - x_min
+
+                if (e.deltaY < 0){
+                    zoomIn()
+                } else {
+                    zoomOut()
+                }
+            }
+            
+                      
             
         </script>
     </body>
